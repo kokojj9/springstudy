@@ -14,26 +14,18 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/springmvc/v2/members")
 public class SpringMemberControllerV2 {
 
     private final MemberRepository memberRepository = MemberRepository.getInstance();
 
-    @RequestMapping("/springmvc/v2/members/new-form")
+    @RequestMapping("/new-form")
     public ModelAndView newForm(){
         System.out.println("SpringMemberFormControllerV1.process");
         return new ModelAndView("new-form");
     }
 
-    @RequestMapping("/springmvc/v2/members")
-    public ModelAndView members() {
-        List<Member> members = memberRepository.findAll();
-        ModelAndView mv = new ModelAndView("members");
-        mv.getModel().put("members", members);
-
-        return mv;
-    }
-
-    @RequestMapping("/springmvc/v2/members/save")
+    @RequestMapping("/save")
     protected ModelAndView save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         int age = Integer.parseInt(request.getParameter("age"));
@@ -44,6 +36,15 @@ public class SpringMemberControllerV2 {
         // Model에 데이터를 보관
         ModelAndView mv = new ModelAndView("save-result");
         mv.addObject("member", member);
+        return mv;
+    }
+
+    @RequestMapping
+    public ModelAndView members() {
+        List<Member> members = memberRepository.findAll();
+        ModelAndView mv = new ModelAndView("members");
+        mv.getModel().put("members", members);
+
         return mv;
     }
 }
